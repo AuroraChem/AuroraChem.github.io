@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model weights | AuroraChem</title>
+  <meta name="description" content="Pretrained AuroraChem checkpoints and how to load them.">
+  <link rel="icon" href="images/logo.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <a class="logo" href="index.html" aria-label="AuroraChem home">
+          <img src="images/logo-web.png" alt="AuroraChem" width="880" height="400">
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar-menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+      <div class="sidebar-menu" id="sidebar-menu">
+      <nav class="nav" aria-label="Site">
+        <div>
+          <div class="nav-label">Getting started</div>
+          <a href="index.html">Introduction</a>
+          <a href="quick-start.html">Quick start</a>
+        </div>
+        <div>
+          <div class="nav-label">The model</div>
+          <a href="model.html">Model description</a>
+          <a href="model-weights.html" aria-current="page">Model weights</a>
+        </div>
+        <div>
+          <div class="nav-label">About</div>
+          <a href="publications.html">Publications</a>
+          <a href="people.html">People</a>
+          <a href="resources.html">Resources</a>
+        </div>
+      </nav>
+      <a class="github-link" href="https://github.com/AuroraChem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-6-2.5m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg> View on GitHub</a>
+      <div class="copyright">&copy; 2026 AuroraChem Developers</div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="content-inner">
+        <h1>Model weights</h1>
+        <p class="lede">Pretrained AuroraChem checkpoints and how to load them</p>
+
+        <h2>Checkpoints</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Version</th><th>Training data</th><th>Grid</th><th>Size</th><th>Download</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AuroraChem v1</td>
+                <td>GEOS-Chem (FETCH4) and ERA5, 2018</td>
+                <td>4&deg;&times;5&deg;, 13 pressure levels</td>
+                <td>[SIZE]</td>
+                <td><a href="[WEIGHTS URL]">[FILE NAME]</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>AuroraChem v1 is the model described in Kim et al. (submitted).</p>
+
+        <h2>Loading a checkpoint</h2>
+<pre><code>[LOADING EXAMPLE]</code></pre>
+
+        <h2>License</h2>
+        <p>The AuroraChem weights are released under [LICENSE]. The base Aurora weights are released by Microsoft under their own <a href="https://github.com/microsoft/aurora">license</a>.</p>
+      </div>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var sb = document.getElementById('sidebar');
+      var btn = sb.querySelector('.menu-toggle');
+      btn.addEventListener('click', function () {
+        var open = sb.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+    })();
+  </script>
+</body>
+</html>

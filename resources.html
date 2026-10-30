@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resources | AuroraChem</title>
+  <meta name="description" content="Models and data used to build AuroraChem.">
+  <link rel="icon" href="images/logo.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <a class="logo" href="index.html" aria-label="AuroraChem home">
+          <img src="images/logo-web.png" alt="AuroraChem" width="880" height="400">
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar-menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+      <div class="sidebar-menu" id="sidebar-menu">
+      <nav class="nav" aria-label="Site">
+        <div>
+          <div class="nav-label">Getting started</div>
+          <a href="index.html">Introduction</a>
+          <a href="quick-start.html">Quick start</a>
+        </div>
+        <div>
+          <div class="nav-label">The model</div>
+          <a href="model.html">Model description</a>
+          <a href="model-weights.html">Model weights</a>
+        </div>
+        <div>
+          <div class="nav-label">About</div>
+          <a href="publications.html">Publications</a>
+          <a href="people.html">People</a>
+          <a href="resources.html" aria-current="page">Resources</a>
+        </div>
+      </nav>
+      <a class="github-link" href="https://github.com/AuroraChem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-6-2.5m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg> View on GitHub</a>
+      <div class="copyright">&copy; 2026 AuroraChem Developers</div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="content-inner wide">
+        <h1>Resources</h1>
+        <p class="lede">Models and data used to build AuroraChem</p>
+
+        <h2>Models</h2>
+        <div class="card-grid">
+          <a class="card" href="https://github.com/microsoft/aurora"><div class="card-title">Aurora</div><div class="card-text">Atmospheric foundation model from Microsoft. AuroraChem is fine-tuned from its pretrained weights.</div></a>
+          <a class="card" href="https://geos-chem.org"><div class="card-title">GEOS-Chem</div><div class="card-text">Global chemical transport model. Source of the chemical training fields.</div></a>
+          <a class="card" href="https://fetch4.github.io/"><div class="card-title">FETCH4</div><div class="card-text">Fate, Emissions, and Transport of CH<sub>4</sub> project. Provided the GEOS-Chem simulation with <sup>14</sup>CO.</div></a>
+        </div>
+
+        <h2>Data</h2>
+        <div class="card-grid">
+          <a class="card" href="https://cds.climate.copernicus.eu/"><div class="card-title">ERA5</div><div class="card-text">ECMWF reanalysis. Source of the meteorological training fields.</div></a>
+          <a class="card" href="https://ads.atmosphere.copernicus.eu/datasets/cams-global-emission-inventories"><div class="card-title">CAMS global emissions</div><div class="card-text">Monthly anthropogenic emissions of CO, NO<sub>x</sub>, NH<sub>3</sub>, and SO<sub>2</sub>.</div></a>
+          <a class="card" href="https://www.tropomi.eu/"><div class="card-title">TROPOMI NO<sub>2</sub></div><div class="card-text">Satellite NO<sub>2</sub> retrievals from Sentinel-5P.</div></a>
+        </div>
+
+        <h2>Related models</h2>
+        <div class="card-grid">
+          <a class="card" href="https://gsam-chem.github.io/"><div class="card-title">gSAM-Chem</div><div class="card-text">Large eddy simulation with interactive chemistry</div></a>
+          <a class="card" href="https://footnet-uw.github.io/"><div class="card-title">FootNet</div><div class="card-text">Machine learning emulator of atmospheric transport</div></a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var sb = document.getElementById('sidebar');
+      var btn = sb.querySelector('.menu-toggle');
+      btn.addEventListener('click', function () {
+        var open = sb.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+    })();
+  </script>
+</body>
+</html>

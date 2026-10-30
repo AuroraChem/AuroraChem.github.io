@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model description | AuroraChem</title>
+  <meta name="description" content="Variables, training data, architecture, and evaluation of AuroraChem.">
+  <link rel="icon" href="images/logo.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <a class="logo" href="index.html" aria-label="AuroraChem home">
+          <img src="images/logo-web.png" alt="AuroraChem" width="880" height="400">
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar-menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+      <div class="sidebar-menu" id="sidebar-menu">
+      <nav class="nav" aria-label="Site">
+        <div>
+          <div class="nav-label">Getting started</div>
+          <a href="index.html">Introduction</a>
+          <a href="quick-start.html">Quick start</a>
+        </div>
+        <div>
+          <div class="nav-label">The model</div>
+          <a href="model.html" aria-current="page">Model description</a>
+          <a href="model-weights.html">Model weights</a>
+        </div>
+        <div>
+          <div class="nav-label">About</div>
+          <a href="publications.html">Publications</a>
+          <a href="people.html">People</a>
+          <a href="resources.html">Resources</a>
+        </div>
+      </nav>
+      <a class="github-link" href="https://github.com/AuroraChem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-6-2.5m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg> View on GitHub</a>
+      <div class="copyright">&copy; 2026 AuroraChem Developers</div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="content-inner wide">
+        <h1>Model description</h1>
+        <p class="lede">Variables, training data, architecture, and evaluation of AuroraChem v1</p>
+
+          <article style="margin-top: 32px;">
+            <section id="overview" class="overview-toc">
+              <div class="overview-text">
+                <h2>Overview</h2>
+                <p>AuroraChem is a fine-tuned version of the Aurora atmospheric foundation model (Bodnar et al., 2025). Aurora is a 1.3&nbsp;billion-parameter model pretrained on more than 1&nbsp;PB of reanalysis, analysis, forecast, and climate model output. AuroraChem adds seven chemical species to the pretrained model and keeps its meteorological variables.</p>
+                <p>AuroraChem takes the atmospheric state at two times, t&nbsp;&minus;&nbsp;6&nbsp;h and t, and predicts the state at t&nbsp;+&nbsp;6&nbsp;h. Longer simulations, or rollouts, feed each prediction back in as the next input.</p>
+              </div>
+              <nav class="toc" aria-label="On this page">
+                <div class="toc-label">On this page</div>
+                <a href="#variables">Variables and grid</a>
+                <a href="#training-data">Training data</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#training">Training</a>
+                <a href="#evaluation">Evaluation</a>
+                <a href="#limitations">Known limitations</a>
+              </nav>
+            </section>
+
+            <section id="variables">
+              <h2>Variables and grid</h2>
+              <p>All fields are on a 4&deg;&times;5&deg; global grid. Three-dimensional fields are on 13 pressure levels: 1000, 925, 850, 700, 600, 500, 400, 300, 250, 200, 150, 100, and 50&nbsp;hPa.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Category</th><th>Fields</th><th>Levels</th><th>Role</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Chemical</td><td>OH, Cl, NO, NO<sub>2</sub>, O<sub>3</sub>, CO, <sup>14</sup>CO</td><td>Pressure</td><td>Predicted</td></tr>
+                    <tr><td>Meteorological</td><td>Temperature, specific humidity, zonal and meridional wind, geopotential height</td><td>Pressure</td><td>Predicted</td></tr>
+                    <tr><td>Surface meteorology</td><td>2&nbsp;m temperature, 10&nbsp;m zonal and meridional wind, mean sea level pressure</td><td>Surface</td><td>Predicted</td></tr>
+                    <tr><td>Emissions</td><td>Monthly anthropogenic CO, NO<sub>x</sub>, NH<sub>3</sub>, SO<sub>2</sub></td><td>Surface</td><td>Input</td></tr>
+                    <tr><td>Static</td><td>Land-sea mask, soil type, topography, time of day, day of week, day of year</td><td>Surface</td><td>Input</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section id="training-data">
+              <h2>Training data</h2>
+              <p>The chemical fields come from a GEOS-Chem v14.5.3 simulation performed for the <a href="https://fetch4.github.io/">FETCH4</a> project, which adds <sup>14</sup>CO to the chemical mechanism. The meteorological fields come from ERA5. Emissions come from the CAMS global anthropogenic inventory. All fields are regridded to the AuroraChem grid. The model is trained on 2018 and evaluated on 2019.</p>
+            </section>
+
+            <section id="architecture">
+              <h2>Architecture</h2>
+              <figure>
+                <img src="images/fig1-architecture.jpg" alt="Schematic of the AuroraChem encoder, backbone, and decoder" width="1800" height="939" loading="lazy">
+                <figcaption>The encoder maps the fields at t&nbsp;&minus;&nbsp;6&nbsp;h and t to a latent state with four vertical levels. The backbone advances the latent state by 6&nbsp;h. The decoder maps it back to the output fields at t&nbsp;+&nbsp;6&nbsp;h.</figcaption>
+              </figure>
+              <p>AuroraChem keeps the encoder, Swin Transformer U-Net backbone, and decoder of the base Aurora model, with three changes. The patch size is 1&times;1 instead of 4&times;4, which is affordable at 4&deg;&times;5&deg;. Each pressure level has its own patch embedding, because chemical species vary more with altitude than meteorological fields do. The chemical fields have their own decoder, and the meteorological fields use the pretrained decoder.</p>
+            </section>
+
+            <section id="training">
+              <h2>Training</h2>
+              <p>All weights are updated during fine-tuning. The new encoder and decoder layers are trained from scratch at a learning rate of 0.01. The pretrained weights, which make up 98% of the model, are updated at a learning rate of 0.001. The loss is a latitude-weighted mean absolute error, with each chemical field weighted so that all fields contribute about equally.</p>
+            </section>
+
+            <section id="evaluation">
+              <h2>Evaluation</h2>
+              <p>AuroraChem is evaluated against GEOS-Chem for chemistry and ERA5 for meteorology using the spatial correlation R<sub>s</sub> at each pressure level. After 3 days, R<sub>s</sub> at 500&nbsp;hPa is [0.91&ndash;0.97] for temperature, OH, O<sub>3</sub>, and <sup>14</sup>CO. After six months, it is 0.85 for OH, 0.60 for O<sub>3</sub>, and 0.52 for <sup>14</sup>CO.</p>
+              <figure>
+                <img src="images/fig2-forecast.jpg" alt="Maps of true and AuroraChem 3-day forecasts of temperature, OH, ozone, and 14CO at 500 hPa" width="1800" height="1743" loading="lazy">
+                <figcaption>3-day forecast at 500&nbsp;hPa, valid 12&nbsp;UTC on 4 January 2019. Left: ERA5 and GEOS-Chem. Right: AuroraChem.</figcaption>
+              </figure>
+              <p>Replacing fields with the true values every 5 days keeps the rollout close to the truth, including fields that are never replaced. Replacing only the meteorological fields keeps 500&nbsp;hPa OH at an annual mean R<sub>s</sub> of 0.93, compared with 0.88 without replacement.</p>
+              <figure>
+                <img src="images/fig4-timeseries.jpg" alt="Time series of spatial correlation for temperature, OH, and ozone in four rollout configurations" width="1800" height="1529" loading="lazy">
+                <figcaption>R<sub>s</sub> at 500&nbsp;hPa in 2019 for a free rollout and for rollouts where all fields, only meteorological fields, or only chemical fields are replaced every 5 days.</figcaption>
+              </figure>
+            </section>
+
+            <section id="limitations">
+              <h2>Known limitations</h2>
+              <ul>
+                <li>Free rollouts have a weak seasonal cycle. A rollout started in January stays close to Northern Hemisphere winter.</li>
+                <li>O<sub>3</sub>, CO, and <sup>14</sup>CO drift after a few months of free running, with artifacts in the tropics.</li>
+                <li>The model receives no biomass burning or biogenic emissions.</li>
+                <li>The same emissions were used in the training and test years, so the response to emission changes is untested.</li>
+              </ul>
+            </section>
+          </article>
+      </div>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var sb = document.getElementById('sidebar');
+      var btn = sb.querySelector('.menu-toggle');
+      btn.addEventListener('click', function () {
+        var open = sb.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+    })();
+  </script>
+</body>
+</html>

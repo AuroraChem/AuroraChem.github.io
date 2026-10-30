@@ -1,22 +1,110 @@
 <!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        
-        <link rel="stylesheet" href="css/styles.css">
-        <script src="js/modernizr-2.8.3.min.js"></script>
-    </head>
-    <body>
-        <p>Hello world! This is AuroraChem.</p>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AuroraChem</title>
+  <meta name="description" content="AuroraChem is a machine learning model that simulates global atmospheric chemistry and meteorology together.">
+  <link rel="icon" href="images/logo.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <a class="logo" href="index.html" aria-label="AuroraChem home">
+          <img src="images/logo-web.png" alt="AuroraChem" width="880" height="400">
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar-menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+      <div class="sidebar-menu" id="sidebar-menu">
+      <nav class="nav" aria-label="Site">
+        <div>
+          <div class="nav-label">Getting started</div>
+          <a href="index.html" aria-current="page">Introduction</a>
+          <a href="quick-start.html">Quick start</a>
+        </div>
+        <div>
+          <div class="nav-label">The model</div>
+          <a href="model.html">Model description</a>
+          <a href="model-weights.html">Model weights</a>
+        </div>
+        <div>
+          <div class="nav-label">About</div>
+          <a href="publications.html">Publications</a>
+          <a href="people.html">People</a>
+          <a href="resources.html">Resources</a>
+        </div>
+      </nav>
+      <a class="github-link" href="https://github.com/AuroraChem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-6-2.5m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg> View on GitHub</a>
+      <div class="copyright">&copy; 2026 AuroraChem Developers</div>
+      </div>
+    </aside>
 
+    <main class="content">
+      <div class="content-inner">
+        <h1>AuroraChem</h1>
+        <p class="lede">Atmospheric chemistry and meteorology in one machine learning model</p>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/jquery-{{JQUERY_VERSION}}.min.js"><\/script>')</script>
-        <script src="js/script.js"></script>
-    </body>
+        <p>AuroraChem is a machine learning model that simulates global atmospheric chemistry and meteorology together. It predicts OH, Cl, NO, NO<sub>2</sub>, ozone, CO, and <sup>14</sup>CO along with temperature, humidity, and winds on a 4&deg;&times;5&deg; grid with 13 pressure levels. A one-year simulation takes about 12 minutes on a single GPU.</p>
+
+        <div class="button-row">
+          <a class="button button-primary" href="quick-start.html">Quick start</a>
+          <a class="button button-secondary" href="publications.html">Paper</a>
+          <a class="button button-secondary" href="https://github.com/AuroraChem">GitHub</a>
+        </div>
+
+        <figure>
+          <img src="images/vid1-aurora.gif" alt="Animation comparing true and AuroraChem fields of 1000 hPa OH and meridional wind over five days in January 2019" width="1648" height="1168">
+          <figcaption>Five days of a free-running AuroraChem rollout starting 1 January 2019 (right) compared with the true fields (left). Top: OH at 1000&nbsp;hPa. Bottom: meridional wind at 1000&nbsp;hPa.</figcaption>
+        </figure>
+
+        <h2>About AuroraChem</h2>
+        <p>AuroraChem is a fine-tuned version of Microsoft's <a href="https://github.com/microsoft/aurora">Aurora</a> atmospheric foundation model. It adds the seven chemical species needed to constrain the oxidative capacity of the troposphere. Chemistry and meteorology share one model state, so an observation of either one can update the other.</p>
+        <p>AuroraChem was trained on GEOS-Chem chemical fields and ERA5 meteorology for 2018 and evaluated on 2019. It takes the atmospheric state at two times, 6 hours apart, and predicts the state 6 hours later. Repeating this step produces rollouts that remain stable for one year.</p>
+        <figure>
+          <img src="images/fig1-architecture.jpg" alt="Schematic of the AuroraChem encoder, backbone, and decoder" width="1800" height="939" loading="lazy">
+          <figcaption>AuroraChem architecture. The encoder maps the fields at t&nbsp;&minus;&nbsp;6&nbsp;h and t to a latent state, the backbone advances it 6&nbsp;h, and the decoder maps it back to the output fields. Solid arrows are new weights trained from scratch. Dotted arrows are pretrained Aurora weights updated at a low learning rate.</figcaption>
+        </figure>
+        <p>AuroraChem is intended as the forward model for joint chemical and meteorological data assimilation. Users can run free rollouts or replace any subset of fields with observations during a rollout. In the paper, inserting only meteorological fields recovers the seasonal cycle of OH, and inserting only TROPOMI-like NO<sub>2</sub> columns constrains OH about as well. The model is differentiable, so it also provides gradients for variational methods without an adjoint.</p>
+
+        <h2>Outputs and capabilities</h2>
+        <ul>
+          <li>6-hourly global 3D fields of OH, Cl, NO, NO<sub>2</sub>, ozone, CO, and <sup>14</sup>CO</li>
+          <li>Temperature, specific humidity, winds, and geopotential height on 13 pressure levels</li>
+          <li>Year-long global simulations on a single GPU</li>
+          <li>Insertion of chemical or meteorological fields during a rollout</li>
+          <li>Gradients through automatic differentiation</li>
+          <li>Pretrained weights at 4&deg;&times;5&deg;</li>
+        </ul>
+
+        <h2>How do I access AuroraChem?</h2>
+        <p>The AuroraChem code is on <a href="https://github.com/AuroraChem">GitHub</a>, and the pretrained weights are on the <a href="model-weights.html">Model weights</a> page. To get started, follow the <a href="quick-start.html">Quick start</a>, which runs a one-year rollout. The <a href="model.html">Model description</a> covers the training data, architecture, and evaluation. For a full scientific description, see <a href="publications.html">Kim et al. (submitted)</a>.</p>
+
+        <div class="callout">
+          We encourage new users to email Eliot Kim (<a href="mailto:ejkim1@uw.edu">ejkim1@uw.edu</a>) or Alex Turner (<a href="mailto:turneraj@uw.edu">turneraj@uw.edu</a>) with a description of their project. This helps us set priorities for new features. For technical support, please open an issue on <a href="https://github.com/AuroraChem">GitHub</a>.
+        </div>
+
+        <h2>Citation</h2>
+        <p>Kim, E. J., Mei, E. J., Ivatt, P. D., Murray, L. T., and Turner, A. J. (submitted), Enabling joint chemical and meteorological data assimilation with an atmospheric foundation model, <i>submitted</i>.</p>
+      </div>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var sb = document.getElementById('sidebar');
+      var btn = sb.querySelector('.menu-toggle');
+      btn.addEventListener('click', function () {
+        var open = sb.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+    })();
+  </script>
+</body>
 </html>
