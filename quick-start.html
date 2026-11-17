@@ -49,56 +49,86 @@
     <main class="content">
       <div class="content-inner">
         <h1>Quick start</h1>
-        <p class="lede">Install AuroraChem, download the pretrained weights, and run a rollout</p>
+        <p class="lede">Install AuroraChem, set up the input data, and run a rollout</p>
 
         <h2>Requirements</h2>
         <ul>
           <li>A CUDA-capable GPU</li>
-          <li>Python [VERSION]</li>
-          <li>About [SIZE] of disk space for the weights and example data</li>
+          <li>Python 3.12 or later</li>
         </ul>
 
         <ol class="steps">
           <li>
             <div class="step-body">
               <h3>Install AuroraChem</h3>
-<pre><code>git clone [REPO URL]
-cd [REPO NAME]
-[INSTALL COMMAND]</code></pre>
+<pre><code>git clone https://github.com/AuroraChem/AuroraChem.git
+cd AuroraChem
+pip install -r requirements.txt</code></pre>
+              <p>The repository includes a modified copy of Microsoft Aurora 1.8.0 in <code>aurora/</code>. Do not install the <code>microsoft-aurora</code> package separately.</p>
             </div>
           </li>
           <li>
             <div class="step-body">
-              <h3>Download the pretrained weights</h3>
-              <p>Available checkpoints are listed on the <a href="model-weights.html">Model weights</a> page.</p>
-<pre><code>[DOWNLOAD COMMAND]</code></pre>
+              <h3>Set up the input data</h3>
+              <p>Set <code>data_dir</code> and <code>output_dir</code> in the configuration files in <code>configs/</code>. The data directory has one folder per data source:</p>
+<pre><code>data_dir/
+├── GEOS_Chem/     chemical fields
+├── era5_interp/   ERA5 meteorology and static fields
+├── emissions/     CAMS monthly emissions
+├── MERRA2/        only if met_type is "merra2"
+└── TROPOMI/       only for TROPOMI NO2 insertion</code></pre>
+              <p>All fields are on the 4&deg;&times;5&deg; grid and 13 pressure levels listed on the <a href="model.html#variables">Model description</a> page.</p>
+              <p>[DATA DOWNLOAD INSTRUCTIONS]</p>
             </div>
           </li>
           <li>
             <div class="step-body">
-              <h3>Prepare the initial conditions</h3>
-              <p>A rollout starts from two atmospheric states 6 hours apart. Each state includes the chemical fields, the meteorological fields on pressure levels, the surface meteorology, monthly emissions, and static fields, all on the 4&deg;&times;5&deg; grid. The full list is on the <a href="model.html#variables">Model description</a> page.</p>
-              <p>[EXAMPLE DATA OR PREPROCESSING SCRIPT]</p>
+              <h3>Get the model weights</h3>
+              <p>Download the pretrained AuroraChem weights from the <a href="model-weights.html">Model weights</a> page and place both files in <code>output_dir/Weights/</code>.</p>
+              <p>To train your own weights instead, run the training script. It downloads the pretrained Aurora weights from Hugging Face on the first run.</p>
+<pre><code>python -m scripts.aurora_train --config configs/aurora_train_config.yml</code></pre>
             </div>
           </li>
           <li>
             <div class="step-body">
               <h3>Run a rollout</h3>
-              <p>Rollouts are set up with a configuration file that sets the start time, length, and output fields.</p>
-<pre><code>[ROLLOUT COMMAND] --config [CONFIG FILE]</code></pre>
+              <p>Run the evaluation script from the repository root. The configuration file sets the start and end times and the type of rollout.</p>
+<pre><code>python -m scripts.aurora_eval --config configs/aurora_eval_config.yml</code></pre>
+              <p>The default configuration runs from 00 UTC on 1 January 2019 to 12 UTC on 31 December 2019.</p>
             </div>
           </li>
           <li>
             <div class="step-body">
-              <h3>Insert observations (optional)</h3>
-              <p>Any subset of fields can be replaced during a rollout. The configuration file sets which fields are replaced and how often.</p>
-<pre><code>[INSERTION EXAMPLE]</code></pre>
+              <h3>Insert fields during a rollout (optional)</h3>
+              <p>The <code>rollout</code> block of the configuration file controls direct insertion. <code>nudge_int</code> is the number of 6&nbsp;h steps between insertions, so 20 inserts every 5 days.</p>
+<pre><code>rollout:
+    rollout_bool: True
+    rollout_type: "nudged_met"
+    nudge_int: 20
+    met_nudge_fields: ["t", "q", "u", "v", "z"]
+    chem_nudge_fields: ["OH", "NO", "NO2", "Cl", "O3", "CO", "C14O"]</code></pre>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th><code>rollout_type</code></th><th>Fields inserted</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>free</code></td><td>None</td></tr>
+                    <tr><td><code>nudged</code></td><td>All meteorological and chemical fields</td></tr>
+                    <tr><td><code>nudged_met</code></td><td>Meteorological fields only</td></tr>
+                    <tr><td><code>nudged_chem</code></td><td>Chemical fields only</td></tr>
+                    <tr><td><code>nudged_partial</code></td><td>The fields listed in <code>met_nudge_fields</code> and <code>chem_nudge_fields</code></td></tr>
+                    <tr><td><code>nudged_tropomi_no2</code></td><td>NO<sub>2</sub> profiles in grid cells with valid TROPOMI pixels</td></tr>
+                    <tr><td><code>nudged_tropomi_no2_ak</code></td><td>NO<sub>2</sub> columns computed with a TROPOMI averaging kernel</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </li>
         </ol>
 
         <h2>Output</h2>
-        <p>[OUTPUT FORMAT AND FILE STRUCTURE]</p>
+        <p>Rollouts are written as netCDF files to <code>output_dir</code>. The file name contains the run name, the start and end dates, and the rollout type.</p>
 
         <div class="callout">
           For technical support, please open an issue on <a href="https://github.com/AuroraChem/AuroraChem">GitHub</a>.

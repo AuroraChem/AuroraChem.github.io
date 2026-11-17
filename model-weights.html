@@ -55,26 +55,27 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Version</th><th>Training data</th><th>Grid</th><th>Size</th><th>Download</th></tr>
+              <tr><th>Version</th><th>Training data</th><th>Grid</th><th>Download</th></tr>
             </thead>
             <tbody>
               <tr>
                 <td>AuroraChem v1</td>
                 <td>GEOS-Chem (FETCH4) and ERA5, 2018</td>
                 <td>4&deg;&times;5&deg;, 13 pressure levels</td>
-                <td>[SIZE]</td>
-                <td><a href="[WEIGHTS URL]">[FILE NAME]</a></td>
+                <td><a href="[ZENODO URL]">[shared at publication]</a></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p>AuroraChem v1 is the model described in Kim et al. (submitted).</p>
+        <p>AuroraChem v1 is the model described in Kim et al. (submitted). Each checkpoint has two files: the model weights (<code>&lt;run_name&gt;_best_weights.pth</code>) and the normalization statistics used during training (<code>&lt;run_name&gt;_norm_stats.npz</code>).</p>
 
         <h2>Loading a checkpoint</h2>
-<pre><code>[LOADING EXAMPLE]</code></pre>
+        <p>Place both files in <code>output_dir/Weights/</code> and set <code>run_name</code> in <code>configs/aurora_eval_config.yml</code> to match the file names. The evaluation script loads the weights automatically:</p>
+<pre><code>python -m scripts.aurora_eval --config configs/aurora_eval_config.yml</code></pre>
+        <p>See the <a href="quick-start.html">Quick start</a> for the full setup.</p>
 
         <h2>License</h2>
-        <p>The AuroraChem weights are released under [LICENSE]. The base Aurora weights are released by Microsoft under their own <a href="https://github.com/microsoft/aurora">license</a>.</p>
+        <p>The AuroraChem code is released under the <a href="https://github.com/AuroraChem/AuroraChem/blob/main/LICENSE">MIT License</a>. The modified Aurora code in <code>aurora/</code> is MIT-licensed by Microsoft. [WEIGHTS LICENSE]</p>
       </div>
     </main>
   </div>
